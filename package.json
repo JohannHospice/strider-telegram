@@ -1,0 +1,37 @@
+{
+  "name": "strider-telegram",
+  "version": "1.0.1",
+  "description": "Telegram notifications",
+  "main": "webapp.js",
+  "scripts": {
+    "test": "mocha -R spec --recursive test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitwit/strider-template.git"
+  },
+  "keywords": [
+    "strider",
+    "plugin",
+    "template"
+  ],
+  "author": "Johann, Yannis",
+  "license": "ISC",
+  "dependencies": {},
+  "strider": {
+    "type": "job",
+    "id": "strider-telegram",
+    "title": "Telegram",
+    "worker": "worker.js",
+    "webapp": "webapp.js",
+    "icon": "icon.png",
+    "config": {
+      "controller": "TemplateController"
+    }
+  },
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.20.1",
+    "sinon-chai": "^2.5.0"
+  }
+}
