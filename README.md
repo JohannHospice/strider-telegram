@@ -13,6 +13,9 @@ projets.
    (You can change it after to private when The plugin retrieve the chat Id)
 
 3) Add your bot to channel like administrator
+(At this time when I'm writing this docs,
+if you use android telegram app , you can have some problems to add your bot 
+to the channel, don't be afraid try with your telegram desktop app)
 
 4) Paste bot api token to the "Telegram Bot Api token" field
 

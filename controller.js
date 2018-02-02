@@ -134,7 +134,8 @@ app.controller('TelegramController', ['$scope','$http', function ($scope,$http) 
                 alert("You must provide public channel name before get chat id.");
             }else {
                 $http.post(telegram_api.uri+telegram_api.token+"/"+telegram_api.method.sendMessage, {
-                    "text": "Test message from strider" , "chat_id":channel
+                    "text": "Test message from strider" , "chat_id":channel,
+                    "disable_notification":"yes"
                 }).success(function(data, status, headers, config) {
                     $scope.config['channel_chat_id'] = data.result.chat.id
                 }).error(function(data, status, headers, config) {
