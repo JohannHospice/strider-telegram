@@ -43,6 +43,14 @@ var telegram_api = {
 app.controller('TelegramController', ['$scope','$http', function ($scope,$http) {
 
 
+    $scope.defaultConfig = function() {
+        $scope.config = $scope.configs[$scope.branch.name].telegram.config || {};
+
+        for (var key in configDefaults) {
+            $scope.config[key] = configDefaults[key];
+        }
+    }
+
     $scope.fillEmptyFields = function() {
         $scope.config = $scope.configs[$scope.branch.name].telegram.config || {};
        // console.log( $scope.config.environment);

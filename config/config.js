@@ -44,6 +44,14 @@ var telegram_api = {
 app.controller('TelegramController', ['$scope','$http', function ($scope,$http) {
 
 
+    $scope.defaultConfig = function() {
+        $scope.config = $scope.configs[$scope.branch.name].telegram.config || {};
+
+        for (var key in configDefaults) {
+            $scope.config[key] = configDefaults[key];
+        }
+    }
+
     $scope.fillEmptyFields = function() {
         $scope.config = $scope.configs[$scope.branch.name].telegram.config || {};
        // console.log( $scope.config.environment);
@@ -122,7 +130,12 @@ app.controller('TelegramController', ['$scope','$http', function ($scope,$http) 
             telegram_api.token = token;
 
             $http.get(telegram_api.uri + telegram_api.token + "/" + telegram_api.method.update, {}).success(function (data, status, headers, config) {
-                $scope.config['channel_chat_id'] = "" + data.result[0].channel_post.chat.id;
+
+                if(data != null &&  data.result.length > 0) {
+                    $scope.config['channel_chat_id'] = "" + data.result[0].channel_post.chat.id;
+                }else {
+                    alert("can't contact your channel with this name! please verify");
+                }
 
             }).error(function (data, status, headers, config) {
                 console.log(data);
