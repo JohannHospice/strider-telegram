@@ -1,7 +1,6 @@
 'use strict';
 var ejs = require('ejs'), _ = require('lodash');
 var axios = require('axios');
-var emoji = require('node-emoji').emoji;
 
 var telegram_api = {
     uri : "https://api.telegram.org/bot",
@@ -42,13 +41,35 @@ module.exports = {
 
                 var phase = null;
                 function onDeployError(id, data) {
-                    console.log("Telegram Error "+data);
+                    try {
+                        var compile = function (tmpl) {
+                            return ejs.compile(tmpl)(_.extend(job, {
+                                _: _ // bring lodash into scope for convenience
+                            }))
+                        };
+
+                        var data = {
+                            text : compile(config.deploy_fail_message),
+                            chat_id: config.channel_chat_id,
+                            disable_web_page_preview: false,
+                            parse_mode: "HTML"
+                        }
+                        axios.post(telegram_api.uri+config.bot_api_key+"/"+telegram_api.method.sendMessage, data)
+                            .then(function (response){
+                                console.log(response.data);
+                            })
+                            .catch (function (error) {
+                                console.log(error);
+                            });
+
+                    }catch (e){
+                        console.error(e.stack)
+                    }
                     cleanup();
                 }
                 function onPhaseDone(id, data) {
                     phase = data.phase;
                     if (phase === "deploy") {
-                    	console.log(data);
                         try {
                             var compile = function (tmpl) {
                                 return ejs.compile(tmpl)(_.extend(job, {
@@ -70,7 +91,6 @@ module.exports = {
                                 console.log(error);
                             });
 
-                            console.log(context);
                         }catch (e){
                             console.error(e.stack)
 						}

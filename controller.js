@@ -96,7 +96,7 @@ app.controller('TelegramController', ['$scope','$http', function ($scope,$http) 
            telegram_api.token = token;
            var channel = $scope.config.channel;
            var channel_chat_id = $scope.config.channel_chat_id;
-
+            var chat_id = "";
            if(!channel_chat_id || channel_chat_id.length === 0){
                chat_id = channel;
            }else {
@@ -104,7 +104,7 @@ app.controller('TelegramController', ['$scope','$http', function ($scope,$http) 
            }
 
            $http.post(telegram_api.uri+telegram_api.token+"/"+telegram_api.method.sendMessage, {
-               "text": "Test message from strider" , "chat_id": +chat_id
+               "text": "Test message from strider" , "chat_id":chat_id
            }).success(function(data, status, headers, config) {
                alert('Looks good from here. Check your Telegram!')
            }).error(function(data, status, headers, config) {
@@ -128,20 +128,22 @@ app.controller('TelegramController', ['$scope','$http', function ($scope,$http) 
         }else {
             telegram_api.token = token;
 
-            $http.get(telegram_api.uri + telegram_api.token + "/" + telegram_api.method.update, {}).success(function (data, status, headers, config) {
+            var channel = $scope.config.channel;
 
-                if(data != null &&  data.result.length > 0) {
-                    $scope.config['channel_chat_id'] = "" + data.result[0].channel_post.chat.id;
-                }else {
-                    alert("can't contact your channel with this name! please verify");
-                }
+            if(!channel || channel.length === 0){
+                alert("You must provide public channel name before get chat id.");
+            }else {
+                $http.post(telegram_api.uri+telegram_api.token+"/"+telegram_api.method.sendMessage, {
+                    "text": "Test message from strider" , "chat_id":channel
+                }).success(function(data, status, headers, config) {
+                    $scope.config['channel_chat_id'] = data.result.chat.id
+                }).error(function(data, status, headers, config) {
+                    alert(data.description);
 
-            }).error(function (data, status, headers, config) {
-                console.log(data);
-                //alert(data);
-            })['finally'](function () {
-                $scope.testing = false;
-            });
+                })['finally'](function() {
+                    $scope.testing = false;
+                });
+            }
         }
 
     };

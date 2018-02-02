@@ -23,8 +23,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "ejs": "^2.5.7",
-    "lodash": "^4.17.4",
-    "node-emoji": "^1.8.1"
+    "lodash": "^4.17.4"
   },
   "strider": {
     "type": "job",
@@ -42,6 +41,7 @@
     "chai": "^1.9.1",
     "mocha": "^1.20.1",
     "sinon-chai": "^2.5.0",
+    "sinon": "^4.2.2",
     "watchify": "^0.10.2"
   }
 }
