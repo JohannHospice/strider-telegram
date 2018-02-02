@@ -1,46 +1,49 @@
-<div id="template" class="well">
-  <h2>Template Config Page</h2>
-  <button ng-click="save()" class="btn btn-primary">Save</button><br/><br/>
+<div id="project_config_slack" class="well">
+  <button class="btn btn-success" ng-click="save()" ng-disabled="saving">Save</button>
+  <button class="btn btn-info" ng-click="help()">Readme.md</button>
+  <button class="btn btn-info" ng-click="test()" ng-disabled="testing">Test</button>
+  <button class="btn btn-info" ng-click="chatId()" ng-disabled="testing">get chat id</button>
 
-  <p class="help-text">
-    These are some messages for demonstrating how the plugin saves config data and reports it during the test process.
-    Each message used slightly differently, so see `worker.js` for different ways to execute actions using config data
-  </p>
+  <fieldset>
+    <legend>Configuration</legend>
+    <label for="api_token">
+      <a href="https://core.telegram.org/bots#3-how-do-i-create-a-bot">Create Bot in Telegram and obtain api_key</a>
+      Télegram Bot Api token:
+    </label>
+    <input type="text" class="span12"
+    ng-model="config.bot_api_key"
+    placeholder="455512:AFPPEF-9R_fffffff-TUcccldmldd">
+    <br/>
+    <label for="channel">Channel</label>
+    <input type="text" name="channel"
+           placeholder="channel name where to push information (@channel_name)" class="span4"
+    ng-model="config.channel">
+    <br>
+    <label for="channel_chat_id">Channel Id (see the readme) </label>
+    <input type="text" name="channel_chat_id" class="span4"
+    ng-model="config.channel_chat_id">
+    <br>
+  </fieldset>
 
-  <h3>Environment</h3>
-  <div class="row-fluid">
-    <div class="span12">
-      <textarea ui-refresh="selectedTab" ng-model="config.environment"></textarea>
-    </div>
-  </div><br/>
+  <fieldset>
+    <legend>Customization</legend>
+    <label for="deploy_pass_message">Deploy Pass Message</label>
+    <textarea name="deploy_pass_message" ng-model="config.deploy_pass_message"></textarea>
+    <br>
+    <label for="deploy_fail_message">Deploy Fail Message</label>
+    <textarea name="deploy_fail_message" ng-model="config.deploy_fail_message"></textarea>
+  </fieldset>
+  <button class="btn btn-success" ng-click="save()" ng-disabled="saving">Save</button>
+  <button class="btn btn-info" ng-click="help()">Readme.md</button>
+  <button class="btn btn-info" ng-click="test()" ng-disabled="testing">Test</button>
+  <button class="btn btn-info" ng-click="chatId()" ng-disabled="testing">get chat id</button>
+</div>
 
-  <h3>Prepare</h3>
-  <div class="row-fluid">
-    <div class="span12">
-      <textarea ui-refresh="selectedTab" ng-model="config.prepare"></textarea>
-    </div>
-  </div><br/>
-
-  <h3>Test</h3>
-  <div class="row-fluid">
-    <div class="span12">
-      <textarea ui-refresh="selectedTab" ng-model="config.test"></textarea>
-    </div>
-  </div><br/>
-
-  <h3>Deploy</h3>
-  <div class="row-fluid">
-    <div class="span12">
-      <textarea ui-refresh="selectedTab" ng-model="config.deploy"></textarea>
-    </div>
-  </div><br/>
-
-  <h3>Cleanup</h3>
-  <div class="row-fluid cleanup">
-    <div class="span12">
-      <textarea ui-refresh="selectedTab" ng-model="config.cleanup"></textarea>
-    </div>
+<div id="readme-telegram" class="modal hide fade" role="dialog" aria-hidden="true">
+  <div class="modal-body">
+    <p>
+        The official repository of projet
+        <a href="#"></a>
+    </p>
   </div>
-
-  <button ng-click="save()" class="btn btn-primary">Save</button>
 </div>

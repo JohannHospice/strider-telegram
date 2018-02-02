@@ -1,4 +1,3 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 
 //var telegram = require('telegram');
 //var _ = { each: require('lodash.foreach') };
@@ -122,7 +121,12 @@ app.controller('TelegramController', ['$scope','$http', function ($scope,$http) 
             telegram_api.token = token;
 
             $http.get(telegram_api.uri + telegram_api.token + "/" + telegram_api.method.update, {}).success(function (data, status, headers, config) {
-                $scope.config['channel_chat_id'] = "" + data.result[0].channel_post.chat.id;
+
+                if(data != null &&  data.result.length > 0) {
+                    $scope.config['channel_chat_id'] = "" + data.result[0].channel_post.chat.id;
+                }else {
+                    alert("can't contact your channel with this name! please verify");
+                }
 
             }).error(function (data, status, headers, config) {
                 console.log(data);
@@ -135,5 +139,3 @@ app.controller('TelegramController', ['$scope','$http', function ($scope,$http) 
     };
 
 }]);
-
-},{}]},{},[1])

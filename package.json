@@ -4,7 +4,10 @@
   "description": "Telegram notifications",
   "main": "webapp.js",
   "scripts": {
-    "test": "mocha -R spec --recursive test"
+    "build": "browserify controller.js -o config/config.js",
+    "tdd": "watchy -w . -- npm test 2>&1 | simple-stacktrace",
+    "test": "mocha -R spec --recursive test",
+    "watch": "watchify controller.js -o config/config.js"
   },
   "repository": {
     "type": "git",
@@ -15,23 +18,30 @@
     "plugin",
     "template"
   ],
-  "author": "Johann, Yannis",
+  "author": "Johann HOSPICE, Yannis AMOUZOU",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.17.1",
+    "ejs": "^2.5.7",
+    "lodash": "^4.17.4",
+    "node-emoji": "^1.8.1"
+  },
   "strider": {
     "type": "job",
-    "id": "strider-telegram",
+    "id": "telegram",
     "title": "Telegram",
     "worker": "worker.js",
     "webapp": "webapp.js",
     "icon": "icon.png",
     "config": {
-      "controller": "TemplateController"
+      "controller": "TelegramController"
     }
   },
   "devDependencies": {
+    "browserify": "^4.1.10",
     "chai": "^1.9.1",
     "mocha": "^1.20.1",
-    "sinon-chai": "^2.5.0"
+    "sinon-chai": "^2.5.0",
+    "watchify": "^0.10.2"
   }
 }

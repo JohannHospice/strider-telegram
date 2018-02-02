@@ -25,6 +25,7 @@ module.exports = {
   //   req.user.account_level can be used for authorization
   //      0 - anonymous, 1 - authed, 2 - admin / collaborator
   globalRoutes: function (app, context) {
+
   },
   // Listen for global events
   //   all job-local events that begin with `plugin.` are proxied to

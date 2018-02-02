@@ -1,4 +1,17 @@
 'use strict';
+var ejs = require('ejs'), _ = require('lodash');
+var axios = require('axios');
+var emoji = require('node-emoji').emoji;
+
+var telegram_api = {
+    uri : "https://api.telegram.org/bot",
+    token: "",
+    method: {
+        update: "getUpdates",
+        sendMessage:"sendMessage"
+    }
+
+}
 
 /* Functions for demonstration purposes only */
 function checkSomething(context, callback){
@@ -26,45 +39,60 @@ module.exports = {
 			//   enumeration of the events. Emit plugin.[pluginid].myevent to
 			//   communicate things up to the browser or to the webapp.
 			listen: function (emitter, context) {
-				emitter.on('job.status.phase.done', function (id, data) {
-					var phase = data.phase;
-					console.log('the ' + phase + ' phase has completed');
-					return true;
-				});
-			},
-			// For each phase that you want to deal with, provide either a
-			// shell command [string] or [Object] (as demo'd below)
-			// or a fn(context, done(err, didrun))
 
-			//string style
-			environment: 'echo "' + config.environment + '"',
-			//object style
-			prepare: {
-				command: 'echo',
-				args: ['"' + config.prepare + '"']
-			},
-			//function style (calling done is a MUST)
-			test: function (context, done) {
-				//this will show up in the terminal log as 'info'
-				console.log(config.test);
+                var phase = null;
+                function onDeployError(id, data) {
+                    console.log("Telegram Error "+data);
+                    cleanup();
+                }
+                function onPhaseDone(id, data) {
+                    phase = data.phase;
+                    if (phase === "deploy") {
+                    	console.log(data);
+                        try {
+                            var compile = function (tmpl) {
+                                return ejs.compile(tmpl)(_.extend(job, {
+                                    _: _ // bring lodash into scope for convenience
+                                }))
+                            };
 
-				//demonstration of how to perform async tasks, finishing with a call to done()
-				checkSomething(context, function (shouldDoThings) {
-					if (!shouldDoThings) {
-						// Send `false` to indicate that we didn't actually run
-						// anything. This is so we can warn users when no plugins
-						// actually do anything during a test run, and avoid false
-						// positives.
-						return done(null, false);
-					}
+                            var data = {
+                                text : compile(config.deploy_pass_message),
+                                chat_id: config.channel_chat_id,
+                                disable_web_page_preview: false,
+                                parse_mode: "HTML"
+                            }
+                            axios.post(telegram_api.uri+config.bot_api_key+"/"+telegram_api.method.sendMessage, data)
+                                    .then(function (response){
+                                    console.log(response.data);
+                            })
+                            .catch (function (error) {
+                                console.log(error);
+                            });
 
-					doThings(function (err) {
-						done(err, true);
-					});
-				});
-			},
-			deploy: 'echo "' + config.deploy + '"',
-			cleanup: 'echo "' + config.cleanup + '"'
+                            console.log(context);
+                        }catch (e){
+                            console.error(e.stack)
+						}
+
+                       // slackPOST(io, job, data, context, config, phase)
+						//console.log("Telegram Done "+phase);
+                        if (data.next === "deploy") {
+                            emitter.on('job.status.phase.errored', onDeployError);
+                        } else {
+                            cleanup();
+                        }
+                    }
+                }
+				emitter.on('job.status.phase.done',onPhaseDone);
+                emitter.on('job.status.cancelled', cleanup);
+
+                function cleanup() {
+                    emitter.removeListener('job.status.phase.done', onPhaseDone);
+                    emitter.removeListener('job.status.phase.errored', onDeployError);
+                    emitter.removeListener('job.status.cancelled', cleanup);
+                }
+			}
 		});
 	},
 	// this is only used if there is _no_ plugin configuration for a
