@@ -1,8 +1,8 @@
 ## Strider Telegram plugin
 
-This plugin allows us to send notification to Telegram Channel using bot
-and like this you can notice your collaborators about the last deployment of your 
-projets.
+this plugin allows you to send notifications to Telegram channel using bot
+and like this you can inform your collaborators about the last
+ deployments of your projets.
 
 #### Settings
 
@@ -10,14 +10,14 @@ projets.
     [Learn how to create telegram bot here](https://core.telegram.org/bots#3-how-do-i-create-a-bot)
    
 2) Create public channel and choose any free nickname 
-   (You can change it after to private when The plugin retrieve the chat Id)
+   (You can change it after to private when The plugin retrieve the chat Id).
 
 3) Add your bot to channel like administrator
 (At this time when I'm writing this docs,
 if you use android telegram app , you can have some problems to add your bot 
-to the channel, don't be afraid try with your telegram desktop app)
+to the channel, don't be afraid try with your telegram desktop app).
 
-4) Paste bot api token to the "Telegram Bot Api token" field
+4) Paste bot api token to the "Telegram Bot Api token" field.
 
 5) Paste your channel name you have chosen (@channel_name) in Channel field.
 
@@ -33,5 +33,6 @@ you must receive "Test message from strider" in your channel.
 10) Enjoy your new Plugin !!!!
 
 <pre>
-don’t hesitate to ask for help if you run into trouble with this plugin
+    don’t hesitate to ask for help if you run into trouble with this plugin
+    yannopeace@gmail.com
 </pre>
